@@ -7,18 +7,26 @@ const cors = require("cors");
 const app = express();
 
 // ==========================
-// 🔹 CONFIGURACIÓN DE CORS (acepta cualquier origen)
+// 🔹 CORS GLOBAL — acepta cualquier dominio
 // ==========================
-app.use(
-  cors({
-    origin: "*", // permite cualquier origen
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*"); // permite todos los orígenes
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 
-// 🔹 Manejar preflight OPTIONS automáticamente
-app.options(/.*/, cors());
+  // responde directamente las solicitudes preflight
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
+
+// También inicializamos cors() como fallback
+app.use(cors());
 
 // ==========================
 // Middleware para parsear JSON y formularios
@@ -33,16 +41,8 @@ const db = require("./app/models");
 db.sequelize.sync();
 
 // ==========================
-// Rutas base y del proyecto
+// Ruta base
 // ==========================
-app.get("/", (req, res) => {
-  res.json({ message: "Bienvenido a Zaphiro" });
-});
-
-// ==========================
-//   RUTAS DEL PROYECTO
-// ==========================
-//require("./app/routes/factura.routes.js")(app);
 require("./app/routes/inventario.routes")(app);
 
 require("./app/routes/catalogo.routes")(app);
