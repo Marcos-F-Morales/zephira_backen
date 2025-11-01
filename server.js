@@ -11,7 +11,7 @@ const app = express();
 // ==========================
 const allowedOrigins = [
   "http://localhost:5173", // desarrollo local
-  "https://zephira-backend.onrender.com", // dominio backend
+   // dominio backend
    "https://zephira.online"
 ];
 
