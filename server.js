@@ -51,7 +51,7 @@ db.sequelize.sync();
 // Rutas base y del proyecto
 // ==========================
 app.get("/", (req, res) => {
-  res.json({ message: "Bienvenido a nuestra Tienda de Zephira" });
+  res.json({ message: "Bienvenido a nuestra Tienda de Zapatos" });
 });
 
 // ==========================
@@ -61,6 +61,8 @@ app.get("/", (req, res) => {
 // Importamos rutas de facturas con controller que acepta tarjetas crudas
 //require("./app/routes/factura.routes.js")(app);
 require("./app/routes/inventario.routes")(app);
+require("./app/routes/promocion.routes")(app);
+require("./app/routes/productopromocion.routes")(app);
 require("./app/routes/catalogo.routes")(app);
 require("./app/routes/estadoenvio.routes")(app);
 require("./app/routes/dashboard.routes.js")(app);
@@ -75,7 +77,9 @@ const tallaRoutes = require("./app/routes/talla.routes.js");
 const colorRoutes = require("./app/routes/color.routes.js");
 const sucursalRoutes = require("./app/routes/sucursal.routes.js");
 const carritoDetalleRoutes = require("./app/routes/carritoDetalle.routes.js");
+
 const carritoRoutes = require("./app/routes/carrito.routes");
+
 //const estadoEnvioRoutes = require("./app/routes/estadoenvio.routes");
 const facturaRoutes = require("./app/routes/factura.routes.js");
 const envioRoutes = require("./app/routes/envio.routes.js");
@@ -84,7 +88,9 @@ const envioRoutes = require("./app/routes/envio.routes.js");
 app.use("/api/Envios", envioRoutes);
 app.use("/api/facturas", facturaRoutes);
 //app.use("/api/estadoEnvios", estadoEnvioRoutes); 
+
 app.use("/api/carrito", carritoRoutes);
+
 app.use("/api/carritodetalles", carritoDetalleRoutes);
 app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/productos", productoRoutes);
