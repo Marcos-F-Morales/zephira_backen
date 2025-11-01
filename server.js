@@ -51,7 +51,7 @@ db.sequelize.sync();
 // Rutas base y del proyecto
 // ==========================
 app.get("/", (req, res) => {
-  res.json({ message: "Bienvenido a nuestra Tienda de Zapatos" });
+  res.json({ message: "Bienvenido a nuestra Tienda Zaphira" });
 });
 
 // ==========================
@@ -61,8 +61,7 @@ app.get("/", (req, res) => {
 // Importamos rutas de facturas con controller que acepta tarjetas crudas
 //require("./app/routes/factura.routes.js")(app);
 require("./app/routes/inventario.routes")(app);
-require("./app/routes/promocion.routes")(app);
-require("./app/routes/productopromocion.routes")(app);
+
 require("./app/routes/catalogo.routes")(app);
 require("./app/routes/estadoenvio.routes")(app);
 require("./app/routes/dashboard.routes.js")(app);
