@@ -11,7 +11,7 @@ const app = express();
 // ==========================
 const allowedOrigins = [
   "http://localhost:5173", // desarrollo local
-  "https://proyecto-analisis-2.onrender.com", // dominio backend
+  "https://zephira-backend.onrender.com", // dominio backend
    "https://zephira.online"
 ];
 
@@ -52,7 +52,7 @@ db.sequelize.sync();
 // Rutas base y del proyecto
 // ==========================
 app.get("/", (req, res) => {
-  res.json({ message: "Bienvenido a nuestra Tienda de Zapatos" });
+  res.json({ message: "Bienvenido a nuestra Tienda de Zephira" });
 });
 
 // ==========================
