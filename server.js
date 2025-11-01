@@ -1,6 +1,4 @@
-// ==========================
-// Importación de módulos
-// ==========================
+// Importamos módulos
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -24,7 +22,6 @@ app.use(
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       } else {
-        console.log("❌ CORS bloqueado para:", origin);
         return callback(new Error("No permitido por CORS"));
       }
     },
@@ -34,13 +31,9 @@ app.use(
   })
 );
 
-// ✅ Responder manualmente a solicitudes preflight
-app.options("*", (req, res) => {
-  res.header("Access-Control-Allow-Origin", req.headers.origin);
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.sendStatus(200);
-});
+// 🔹 Manejar preflight OPTIONS automáticamente
+app.options(/.*/, cors());
+
 
 // ==========================
 // Middleware para parsear JSON y formularios
@@ -52,10 +45,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Conexión con la base de datos
 // ==========================
 const db = require("./app/models");
-db.sequelize
-  .sync()
-  .then(() => console.log("✅ Base de datos sincronizada correctamente."))
-  .catch((err) => console.error("❌ Error al sincronizar la base de datos:", err));
+db.sequelize.sync();
 
 // ==========================
 // Rutas base y del proyecto
@@ -65,15 +55,19 @@ app.get("/", (req, res) => {
 });
 
 // ==========================
-// RUTAS INTERNAS
+//   RUTAS DEL PROYECTO
 // ==========================
+
+// Importamos rutas de facturas con controller que acepta tarjetas crudas
+//require("./app/routes/factura.routes.js")(app);
 require("./app/routes/inventario.routes")(app);
 require("./app/routes/catalogo.routes")(app);
 require("./app/routes/estadoenvio.routes")(app);
 require("./app/routes/dashboard.routes.js")(app);
 
+
 // ==========================
-// RUTAS EXTERNAS
+//   RUTAS CON ROUTERS EXTERNOS
 // ==========================
 const usuarioRoutes = require("./app/routes/usuario.routes.js");
 const productoRoutes = require("./app/routes/producto.routes.js");
@@ -82,11 +76,14 @@ const colorRoutes = require("./app/routes/color.routes.js");
 const sucursalRoutes = require("./app/routes/sucursal.routes.js");
 const carritoDetalleRoutes = require("./app/routes/carritoDetalle.routes.js");
 const carritoRoutes = require("./app/routes/carrito.routes");
+//const estadoEnvioRoutes = require("./app/routes/estadoenvio.routes");
 const facturaRoutes = require("./app/routes/factura.routes.js");
 const envioRoutes = require("./app/routes/envio.routes.js");
 
-app.use("/api/envios", envioRoutes);
+
+app.use("/api/Envios", envioRoutes);
 app.use("/api/facturas", facturaRoutes);
+//app.use("/api/estadoEnvios", estadoEnvioRoutes); 
 app.use("/api/carrito", carritoRoutes);
 app.use("/api/carritodetalles", carritoDetalleRoutes);
 app.use("/api/usuarios", usuarioRoutes);
@@ -100,5 +97,5 @@ app.use("/api/sucursales", sucursalRoutes);
 // ==========================
 const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor ejecutándose en el puerto ${PORT}`);
+  console.log(`✅ Server is running on port ${PORT}.`);
 });
