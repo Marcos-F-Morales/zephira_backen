@@ -18,7 +18,7 @@ app.use(
 );
 
 // 🔹 Manejar preflight OPTIONS automáticamente
-app.options("*", cors());
+app.options(/.*/, cors());
 
 // ==========================
 // Middleware para parsear JSON y formularios
